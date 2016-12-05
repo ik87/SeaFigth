@@ -55,7 +55,7 @@ namespace SeaFight
             {
                 while (true)
                 {
-                    ship.Horisont = rn.Next(0,2) == 1;
+                    ship.Horisont = (rn.Next(0,2) == 1);
                     int x = rn.Next(1, MAPSIZE - 1);
                     int y = rn.Next(1, MAPSIZE - 1);
                     if (DetectEmpty(x,y)) {
