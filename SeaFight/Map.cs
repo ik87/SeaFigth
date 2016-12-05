@@ -9,30 +9,162 @@ namespace SeaFight
 
     class Map : IObservable
     {
+        public static char BOAT = 'o';
+        public static char EMPTY = '\0';
+        public static char HIT = 'h';
+        public static char MISSED = 'm';
         public static int MAPSIZE = 12;
-        private List<IObserver> observers;
-        int[,] map;
+        char[,] shotMap;
+        private List<IObserver> ships;
 
         public Map() {
-            observers = new List<IObserver>();
+            ships = new List<IObserver>();
+            shotMap = new char[Map.MAPSIZE, Map.MAPSIZE];
         }
-        
 
         public void AddObserver(IObserver o)
         {
-            
-            observers.Add(o);
+
+            ships.Add(o);
         }
 
-        public void NotifyObservers()
+        public bool Shot(int x, int y)
         {
-            foreach(IObserver ob in observers) {
-                ob.Update();
+            foreach (IObserver ship in ships)
+            {
+                
+                if (ship.Position[y, x] == Map.BOAT && ship.CurrentLength != 0)
+                {
+                        ship.CurrentLength--;
+                        ship.Position[y, x] = Map.HIT;
+                        shotMap[y, x] = Map.HIT;
+                    if (ship.CurrentLength == 0) {
+                        WrapMissing(ship);
+                    }
+                        return true; 
+                }
+           }
+            if(shotMap[y, x] == Map.EMPTY)
+                shotMap[y, x] = Map.MISSED;
+            return false;
+       }
+        
+        public void FillMap(Random rn) {
+
+            foreach (IObserver ship in ships)
+            {
+                while (true)
+                {
+                    ship.Horisont = rn.Next(0,2) == 1;
+                    int x = rn.Next(1, MAPSIZE - 1);
+                    int y = rn.Next(1, MAPSIZE - 1);
+                    if (DetectEmpty(x,y)) {
+                        if (ship.Length == 1)
+                        {
+                            ship.Position[y, x] = Map.BOAT;
+                            continue;
+                        }
+                        for (int i = 0; i < ship.Length; )
+                        {
+                            if (ship.Horisont)
+                            {
+                                if (DetectEmpty(x + i, y))
+                                {
+                                    ship.Position[y, x + i] = Map.BOAT;
+                                    i++;
+                                    continue;
+                                }
+                                else
+                                {
+                                    i--;
+                                    while (i >= 0) {
+                                        ship.Position[y, x + i] = Map.EMPTY;
+                                        i--;
+                                    }
+
+                                    break;
+                                }
+                            }
+                            else {
+                                if (DetectEmpty(x , y + i))
+                                {
+                                    ship.Position[y + i, x] = Map.BOAT;
+                                    i++;
+                                    continue;
+                                }
+                                else
+                                {
+                                    i--;
+                                    while (i >= 0)
+                                    {
+                                        ship.Position[y + i, x] = Map.EMPTY;
+                                        i--;
+                                    }
+
+                                    break;
+                                }
+
+                            }
+                        }
+                    }
+                }
             }
+            }
+
+        private bool DetectEmpty(int x, int y) {
+            foreach (IObserver ship in ships) {
+                if (ship.Position[y, x] != BOAT && ship.Position[y, x + 1] != BOAT && 
+                    ship.Position[y + 1, x + 1] != BOAT && ship.Position[y + 1, x] != BOAT &&
+                   ship.Position[y + 1, x - 1] != BOAT && ship.Position[y, x - 1] != BOAT && 
+                   ship.Position[y - 1, x - 1] != BOAT && ship.Position[y - 1, x] != BOAT
+                   && ship.Position[y - 1, x + 1] != BOAT) {
+                    return true;
+                }
+               }
+            return false;
         }
 
-        public void RemoveObserver(IObserver o)
-        {
+        private void WrapMissing(IObserver ship) {
+            for (int y = 1; y < Map.MAPSIZE - 1; y++)
+            {
+                for (int x = 1; x < Map.MAPSIZE - 1; x++)
+                {
+                    if (ship.Position[y, x] == Map.HIT) {
+
+                        if (ship.Position[y, x + 1] != Map.HIT) {
+                            shotMap[y, x + 1] = Map.MISSED;
+                        }
+                        if (ship.Position[y + 1, x + 1] != Map.HIT)
+                        {
+                            shotMap[y + 1, x + 1 ] = Map.MISSED;
+                        }
+                        if (ship.Position[y + 1, x] != Map.HIT)
+                        {
+                            shotMap[y + 1, x] = Map.MISSED;
+                        }
+                        if (ship.Position[y + 1, x - 1] != Map.HIT)
+                        {
+                            shotMap[y + 1, x - 1] = Map.MISSED;
+                        }
+                        if (ship.Position[y, x - 1] != Map.HIT)
+                        {
+                            shotMap[y, x - 1] = Map.MISSED;
+                        }
+                        if (ship.Position[y - 1, x - 1] != Map.HIT)
+                        {
+                            shotMap[y - 1, x - 1] = Map.MISSED;
+                        }
+                        if (ship.Position[y - 1, x] != Map.HIT)
+                        {
+                            shotMap[y - 1, x] = Map.MISSED;
+                        }
+                        if (ship.Position[y - 1, x + 1] != Map.HIT)
+                        {
+                            shotMap[y - 1, x + 1] = Map.MISSED;
+                        }
+                    }
+                }
+            }
         }
     }
 }

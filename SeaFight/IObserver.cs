@@ -8,6 +8,10 @@ namespace SeaFight
 {
     interface IObserver
     {
-        void Update();
+        char[,] Position { get; set; }
+        int Length { get; set; }
+        bool Horisont { get; set; }
+        int CurrentLength { get; set; }
+        
     }
 }
