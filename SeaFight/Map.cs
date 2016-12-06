@@ -48,76 +48,77 @@ namespace SeaFight
                 shotMap[y, x] = Map.MISSED;
             return false;
        }
-        
-        public void FillMap(Random rn) {
+
+        public void FillMap(Random rn)
+        {
 
             foreach (IObserver ship in ships)
             {
-                while (true)
-                {
-                    ship.Horisont = (rn.Next(0,2) == 1);
+                bool builder = true;
+                do {
+                    ship.Horisont = (rn.Next(0, 2) == 1);
                     int x = rn.Next(1, MAPSIZE - 1);
                     int y = rn.Next(1, MAPSIZE - 1);
-                    if (DetectEmpty(x,y)) {
+
+                    if (DetectEmpty(x, y))
+                    {
                         if (ship.Length == 1)
                         {
                             ship.Position[y, x] = Map.BOAT;
-                            continue;
+                            builder = false;
                         }
-                        for (int i = 0; i < ship.Length; )
+                        else
                         {
-                            if (ship.Horisont)
+                            for (int i = 0; i < ship.Length; )
                             {
-                                if (DetectEmpty(x + i, y))
-                                {
-                                    ship.Position[y, x + i] = Map.BOAT;
-                                    i++;
-                                    continue;
-                                }
-                                else
-                                {
-                                    i--;
-                                    while (i >= 0) {
-                                        ship.Position[y, x + i] = Map.EMPTY;
-                                        i--;
-                                    }
 
-                                    break;
-                                }
-                            }
-                            else {
-                                if (DetectEmpty(x , y + i))
+                                if (ship.Horisont)
                                 {
-                                    ship.Position[y + i, x] = Map.BOAT;
-                                    i++;
-                                    continue;
-                                }
-                                else
-                                {
-                                    i--;
-                                    while (i >= 0)
+                                    if (DetectEmpty(x + i, y))
                                     {
-                                        ship.Position[y + i, x] = Map.EMPTY;
-                                        i--;
+                                        ship.Position[y, x + i] = Map.BOAT;
+                                    }
+                                    else
+                                    {
+                                        ShipClear(ship);
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    if (DetectEmpty(x, y + i))
+                                    {
+                                        ship.Position[y + i, x] = Map.BOAT;
+                                    }
+                                    else
+                                    {
+                                        ShipClear(ship);
+                                        break;
                                     }
 
+                                }
+                                i++;
+                                if (i == ship.Length) {
+                                    builder = false;
                                     break;
                                 }
-
                             }
                         }
                     }
-                }
+                } while (builder);
             }
-            }
+        }
 
         private bool DetectEmpty(int x, int y) {
-            foreach (IObserver ship in ships) {
+            if ((y + 1) > Map.MAPSIZE - 1 || (x + 1) > Map.MAPSIZE - 1) {
+                return false;
+            }
+                foreach (IObserver ship in ships) {
                 if (ship.Position[y, x] != BOAT && ship.Position[y, x + 1] != BOAT && 
                     ship.Position[y + 1, x + 1] != BOAT && ship.Position[y + 1, x] != BOAT &&
                    ship.Position[y + 1, x - 1] != BOAT && ship.Position[y, x - 1] != BOAT && 
-                   ship.Position[y - 1, x - 1] != BOAT && ship.Position[y - 1, x] != BOAT
-                   && ship.Position[y - 1, x + 1] != BOAT) {
+                   ship.Position[y - 1, x - 1] != BOAT && ship.Position[y - 1, x] != BOAT && 
+                   ship.Position[y - 1, x + 1] != BOAT) {
                     return true;
                 }
                }
@@ -165,6 +166,12 @@ namespace SeaFight
                     }
                 }
             }
+        }
+
+        void ShipClear(IObserver ship) {
+            for (int y = 0; y < Map.MAPSIZE; y++)
+                for (int x = 0; x < Map.MAPSIZE; x++)
+                    ship.Position[y, x] = '\0';
         }
     }
 }

@@ -16,7 +16,9 @@ namespace SeaFight
             get{ return buttonIndex; }
             set { buttonIndex = value; }
         }
-
+        public override void NotifyDefault(bool value)
+        {
+        }
         public void NoSelectButton()
         {
 

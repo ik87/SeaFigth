@@ -5,6 +5,7 @@
         /// <summary>
         /// Required designer variable.
         /// </summary>
+        
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
@@ -27,9 +28,11 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
-        {
-            this.SuspendLayout();
+        {   //Map & Ship
+
+            //
             this.buttons = new ButtonArray(this);
+            this.SuspendLayout();
             // 
             // Form1
             // 
@@ -47,6 +50,8 @@
 
         #endregion
         private ButtonArray buttons;
+
+        
     }
 }
 

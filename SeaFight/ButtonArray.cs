@@ -26,14 +26,20 @@ namespace SeaFight
                 for (int x = 1; x < Map.MAPSIZE - 1; x++) {
                     
                     buttons[y, x] = new NoFocusCuesButton();
-                    buttons[y, x].ButtonIndex = new Point(y, x);
+                    buttons[y, x].ButtonIndex = new Point(x,y);
                     buttons[y, x].BackColor = System.Drawing.SystemColors.ActiveCaption;
                     buttons[y, x].FlatStyle = System.Windows.Forms.FlatStyle.Popup;
                     buttons[y, x].Size = new System.Drawing.Size(30, 30);
                     buttons[y, x].UseVisualStyleBackColor = false;
-                    buttons[y, x].Location = new Point((12 + 18) * x, (12 + 18) * y);
+                    //buttons[y, x].Location = new Point((12 + 18) * x, (12 + 18) * y);
+                    //buttons[y, x].FlatAppearance.BorderColor = Color.FromArgb(0, 255, 255, 255);
+                    buttons[y, x].Left = 32 * x;
+                    buttons[y, x].Top = 32 * y;
                     buttons[y, x].NoSelectButton();
                     buttons[y, x].Click += new System.EventHandler(ClickHandler);
+                    buttons[y, x].TabStop = false;
+                    buttons[y, x].FlatStyle = FlatStyle.Flat;
+                    buttons[y, x].FlatAppearance.BorderSize = 0;
                     HostForm.Controls.Add(buttons[y, x]);
                 }
                 
@@ -75,9 +81,15 @@ namespace SeaFight
 
         public void ClickHandler(Object sender, System.EventArgs e)
         {
-            System.Windows.Forms.MessageBox.Show("You have clicked button " +
-                ((NoFocusCuesButton)sender).ButtonIndex
-                );
+            //System.Windows.Forms.MessageBox.Show("You have clicked button " +
+            int x = ((NoFocusCuesButton)sender).ButtonIndex.X;
+            int y = ((NoFocusCuesButton)sender).ButtonIndex.Y;
+            
+            if (Program.map.Shot(x, y)) {
+                ((NoFocusCuesButton)sender).BackColor = System.Drawing.SystemColors.ControlDark;
+            }
+
+
       
         }
 
