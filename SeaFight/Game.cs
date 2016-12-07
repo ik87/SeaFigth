@@ -98,38 +98,38 @@ namespace SeaFight
             {
                 for (int x = 1; x < Map.SIZE - 1; x++)
                 {
-                    if (ship.getPosition()[y, x] == Map.SHIP)
+                    if (ship.Posiztion[y, x] == Map.SHIP)
                     {
 
-                        if (ship.getPosition()[y, x + 1] != Map.SHIP)
+                        if (ship.Posiztion[y, x + 1] != Map.SHIP)
                         {
                             map.GetMap[y, x + 1] = Map.MISSED;
                         }
-                        if (ship.getPosition()[y + 1, x + 1] != Map.SHIP)
+                        if (ship.Posiztion[y + 1, x + 1] != Map.SHIP)
                         {
                             map.GetMap[y + 1, x + 1] = Map.MISSED;
                         }
-                        if (ship.getPosition()[y + 1, x] != Map.SHIP)
+                        if (ship.Posiztion[y + 1, x] != Map.SHIP)
                         {
                             map.GetMap[y + 1, x] = Map.MISSED;
                         }
-                        if (ship.getPosition()[y + 1, x - 1] != Map.SHIP)
+                        if (ship.Posiztion[y + 1, x - 1] != Map.SHIP)
                         {
                             map.GetMap[y + 1, x - 1] = Map.MISSED;
                         }
-                        if (ship.getPosition()[y, x - 1] != Map.SHIP)
+                        if (ship.Posiztion[y, x - 1] != Map.SHIP)
                         {
                             map.GetMap[y, x - 1] = Map.MISSED;
                         }
-                        if (ship.getPosition()[y - 1, x - 1] != Map.SHIP)
+                        if (ship.Posiztion[y - 1, x - 1] != Map.SHIP)
                         {
                             map.GetMap[y - 1, x - 1] = Map.MISSED;
                         }
-                        if (ship.getPosition()[y - 1, x] != Map.SHIP)
+                        if (ship.Posiztion[y - 1, x] != Map.SHIP)
                         {
                             map.GetMap[y - 1, x] = Map.MISSED;
                         }
-                        if (ship.getPosition()[y - 1, x + 1] != Map.SHIP)
+                        if (ship.Posiztion[y - 1, x + 1] != Map.SHIP)
                         {
                             map.GetMap[y - 1, x + 1] = Map.MISSED;
                         }
@@ -137,37 +137,51 @@ namespace SeaFight
                 }
             }
         }
-        private void DetectShip(Point point) {
+        public void DetectShip(Point point) {
             foreach (Ship ship in ships) {
-                if (ship.getPosition()[point.Y, point.X] == Map.SHIP) {
+                if (ship.Posiztion[point.Y, point.X] == Map.SHIP) {
                     if (ship.live > 0)
-                    {
                         ship.live--;
-                    //        WrapMissing(ship);
+                    if(ship.live == 0)    
+                    WrapMissing(ship);
                     }
                 }
             }
-        }
+        
         public void reset()
         {
             map.clearMap();
             clearShips();
             positionShips();
         }
-        public bool Shot(Point point) {
+        /*public bool Shot(Point point) {
             if (map.GetMap[point.Y, point.X] == Map.SHIP)
             {
-             //   map.GetMap[point.Y, point.X] = Map.HIT;
-             //   DetectShip(point);
+                map.GetMap[point.Y, point.X] = Map.HIT;
+                //DetectShip(point);
                 return true;
             }
-            else /*if(map.GetMap[point.Y, point.X] != Map.HIT)*/{
-               // map.GetMap[point.Y, point.X] = Map.MISSED;
+            else if(map.GetMap[point.Y, point.X] != Map.HIT){
+               map.GetMap[point.Y, point.X] = Map.MISSED;
                 return false;
             }
-           // return false;
+            return false;
+        }*/
+        public void Shot(Point point)
+        {
+            if (map.GetMap[point.Y, point.X] == Map.SHIP)
+            {
+                map.GetMap[point.Y, point.X] = Map.HIT;
+                //DetectShip(point);
+            }
+            else if (map.GetMap[point.Y, point.X] == Map.HIT) {
+                
+            }
+            else
+            {
+                map.GetMap[point.Y, point.X] = Map.MISSED;
+            }
         }
-
 
 
     }

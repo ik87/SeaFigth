@@ -29,7 +29,7 @@ namespace SeaFight
             {
                 for (int j = 1; j < SIZE - 1; j++)
                 {
-                    if (sh.getPosition()[i, j] == Map.SHIP)
+                    if (sh.Posiztion[i, j] == Map.SHIP)
                         map[i, j] = Map.SHIP;
                 }
             }

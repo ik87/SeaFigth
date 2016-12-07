@@ -8,7 +8,7 @@ namespace SeaFight
 {
     class Ship
     {
-        private char[,] posiztion;
+        public char[,] Posiztion { get; set; }
         private int size;
         public int live { get; set; }
         private bool horizont;
@@ -21,7 +21,7 @@ namespace SeaFight
         {
             this.size = size;
             this.live = size;
-            posiztion = new char[Map.SIZE, Map.SIZE];
+            Posiztion = new char[Map.SIZE, Map.SIZE];
             this.horizont = horizont;
             clearShip();
         }
@@ -45,7 +45,7 @@ namespace SeaFight
 
                         for (int i = 0; i < size; i++)
                         {
-                            posiztion[y, x + i] = Map.SHIP;
+                            Posiztion[y, x + i] = Map.SHIP;
                         }
                         map.setMap(this);
                         return true;
@@ -69,7 +69,7 @@ namespace SeaFight
 
                         for (int i = 0; i < size; i++)
                         {
-                            posiztion[y + i, x] = Map.SHIP;
+                            Posiztion[y + i, x] = Map.SHIP;
                         }
                         map.setMap(this);
                         return true;
@@ -84,7 +84,7 @@ namespace SeaFight
             {
                 if (scanAround(x, y, map))
                 {
-                    posiztion[y, x] = Map.SHIP;
+                    Posiztion[y, x] = Map.SHIP;
                     map.setMap(this);
                     return true;
                 }
@@ -96,10 +96,7 @@ namespace SeaFight
             else
                 return false;
         }
-        public char[,] getPosition()
-        {
-            return posiztion;
-        }
+
         private bool scanAround(int x, int y, Map map)
         {
             if (
@@ -121,7 +118,7 @@ namespace SeaFight
             {
                 for (int j = 0; j < Map.SIZE; j++)
                 {
-                    posiztion[j, i] = Map.EMPTY;
+                    Posiztion[j, i] = Map.EMPTY;
                 }
             }
         }
