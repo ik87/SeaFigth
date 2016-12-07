@@ -53,8 +53,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="IObserver.cs" />
-    <Compile Include="IObservable.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="NoFocusCuesButton.cs">
       <SubType>Component</SubType>

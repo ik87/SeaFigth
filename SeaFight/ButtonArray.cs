@@ -20,10 +20,10 @@ namespace SeaFight
         public NoFocusCuesButton[,] AddNewButton()
         {
             // Create a new instance of the Button class.
-            buttons = new NoFocusCuesButton[Map.MAPSIZE, Map.MAPSIZE];
+            buttons = new NoFocusCuesButton[Map.SIZE, Map.SIZE];
             // Add the button to the collection's internal list.
-            for (int y = 1; y < Map.MAPSIZE - 1; y++) {
-                for (int x = 1; x < Map.MAPSIZE - 1; x++) {
+            for (int y = 1; y < Map.SIZE - 1; y++) {
+                for (int x = 1; x < Map.SIZE - 1; x++) {
                     
                     buttons[y, x] = new NoFocusCuesButton();
                     buttons[y, x].ButtonIndex = new Point(x,y);
@@ -31,8 +31,6 @@ namespace SeaFight
                     buttons[y, x].FlatStyle = System.Windows.Forms.FlatStyle.Popup;
                     buttons[y, x].Size = new System.Drawing.Size(30, 30);
                     buttons[y, x].UseVisualStyleBackColor = false;
-                    //buttons[y, x].Location = new Point((12 + 18) * x, (12 + 18) * y);
-                    //buttons[y, x].FlatAppearance.BorderColor = Color.FromArgb(0, 255, 255, 255);
                     buttons[y, x].Left = 32 * x;
                     buttons[y, x].Top = 32 * y;
                     buttons[y, x].NoSelectButton();
@@ -82,15 +80,39 @@ namespace SeaFight
         public void ClickHandler(Object sender, System.EventArgs e)
         {
             //System.Windows.Forms.MessageBox.Show("You have clicked button " +
-            int x = ((NoFocusCuesButton)sender).ButtonIndex.X;
-            int y = ((NoFocusCuesButton)sender).ButtonIndex.Y;
+            //int x = ((NoFocusCuesButton)sender).ButtonIndex.X;
+            //int y = ((NoFocusCuesButton)sender).ButtonIndex.Y;
             
-            if (Program.map.Shot(x, y)) {
+            if (Program.game.Shot(((NoFocusCuesButton)sender).ButtonIndex))
+            {
                 ((NoFocusCuesButton)sender).BackColor = System.Drawing.SystemColors.ControlDark;
             }
+            else if(((NoFocusCuesButton)sender).BackColor != System.Drawing.SystemColors.ControlDark) {
+                
+                ((NoFocusCuesButton)sender).BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            }
+            
+            /*
+            Program.game.Shot(((NoFocusCuesButton)sender).ButtonIndex);
+            for (int y = 1; y < Map.SIZE; y++)
+            {
+                for (int x = 1; x < Map.SIZE; x++)
+                {
+                    if (Program.game.map.GetMap[y, x] == Map.HIT)
+                    {
+                        ((NoFocusCuesButton)sender).BackColor = System.Drawing.SystemColors.ControlDark;
+                    }
+                    if (Program.game.map.GetMap[y, x] == Map.MISSED)
+                    {
+                        ((NoFocusCuesButton)sender).BackColor = System.Drawing.SystemColors.ButtonHighlight;
+                    }
+
+                }
+            }
+            */
 
 
-      
+
         }
 
         private readonly System.Windows.Forms.Form HostForm;
