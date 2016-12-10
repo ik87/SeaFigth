@@ -20,10 +20,15 @@ namespace SeaFight
         
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
+            aiMap = new ButtonArray(this, new System.Drawing.Point(10, 0));
+            imMap = new ButtonArray(this, new System.Drawing.Point(400, 0));
 
         }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }
