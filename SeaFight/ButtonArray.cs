@@ -100,11 +100,11 @@ namespace SeaFight
                 {
                     if (Program.game.map.GetMap[y, x] == Map.HIT)
                     {
-                        ((NoFocusCuesButton)sender).BackColor = System.Drawing.SystemColors.ControlDark;
+                        buttons[y,x].BackColor = System.Drawing.SystemColors.ControlDark;
                     }
                     else if (Program.game.map.GetMap[y, x] == Map.MISSED)
                     {
-                        ((NoFocusCuesButton)sender).BackColor = System.Drawing.SystemColors.ButtonHighlight;
+                        buttons[y, x].BackColor = System.Drawing.SystemColors.ButtonHighlight;
                     }
                 }
             }

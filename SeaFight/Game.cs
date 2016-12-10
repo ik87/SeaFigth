@@ -137,6 +137,17 @@ namespace SeaFight
                 }
             }
         }
+        private void setEmtyToMiss() {
+            for (int y = 1; y < Map.SIZE - 1; y++)
+            {
+                for (int x = 1; x < Map.SIZE - 1; x++)
+                {
+                    if (map.GetMap[y, x] == Map.EMPTY) {
+                        map.GetMap[y, x] = Map.MISSED;
+                    } 
+                }
+            }
+        } 
         public void DetectShip(Point point) {
             foreach (Ship ship in ships) {
                 if (ship.Posiztion[point.Y, point.X] == Map.SHIP) {
@@ -147,40 +158,37 @@ namespace SeaFight
                     }
                 }
             }
-        
+        public bool isVictory() {
+            for (int i = 0; i < Map.SHIPS; i++)
+            {
+                if (ships[i].live != 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         public void reset()
         {
             map.clearMap();
             clearShips();
             positionShips();
         }
-        /*public bool Shot(Point point) {
-            if (map.GetMap[point.Y, point.X] == Map.SHIP)
-            {
-                map.GetMap[point.Y, point.X] = Map.HIT;
-                //DetectShip(point);
-                return true;
-            }
-            else if(map.GetMap[point.Y, point.X] != Map.HIT){
-               map.GetMap[point.Y, point.X] = Map.MISSED;
-                return false;
-            }
-            return false;
-        }*/
         public void Shot(Point point)
         {
             if (map.GetMap[point.Y, point.X] == Map.SHIP)
             {
                 map.GetMap[point.Y, point.X] = Map.HIT;
-                //DetectShip(point);
+                DetectShip(point);
             }
-            else if (map.GetMap[point.Y, point.X] == Map.HIT) {
-                
-            }
-            else
-            {
+            else if (map.GetMap[point.Y, point.X] != Map.HIT) {
                 map.GetMap[point.Y, point.X] = Map.MISSED;
             }
+
+            if (isVictory()) {
+                setEmtyToMiss();
+            }
+
         }
 
 
